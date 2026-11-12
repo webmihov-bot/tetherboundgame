@@ -8,7 +8,9 @@ Everything is generated in code: meshes, shaders, animation, UI and audio. There
 1. Open Godot 4.3 or newer (tested on 4.3 and 4.7.2), choose **Import**, and select `project.godot` in this folder.
 2. Press **F5**.
 3. Pick **Solo Mode** to try it alone, or **Host World** and have friends **Join** with your IP.
-or play online https://tetherboundgame.com/
+
+   
+or Download Windows 11 x64 version from Officail game developer website at https://tetherboundgame.com/
 ## Controls
 
 | Key | Action |
