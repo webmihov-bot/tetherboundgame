@@ -1,0 +1,14 @@
+# One command:  docker compose up -d --build
+# Then players join <server-ip>:7777 from the main menu.
+services:
+  tetherbound:
+    build:
+      context: .
+      args:
+        GODOT_VERSION: "4.7.2"
+    container_name: tetherbound-server
+    restart: unless-stopped
+    environment:
+      TETHERBOUND_PORT: "7777"
+    ports:
+      - "7777:7777/udp"

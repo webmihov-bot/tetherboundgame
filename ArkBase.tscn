@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/ArkBase.gd" id="1_ark"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_deck"]
+height = 1.0
+radius = 9.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pylon"]
+height = 3.2
+radius = 1.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ark"]
+properties/0/path = NodePath(".:net_position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:pilot_id")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:net_velocity")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Ark" type="AnimatableBody3D"]
+collision_layer = 1
+collision_mask = 1
+sync_to_physics = false
+script = ExtResource("1_ark")
+
+[node name="Deck" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("CylinderShape3D_deck")
+
+[node name="Pylon" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+shape = SubResource("CylinderShape3D_pylon")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ark")

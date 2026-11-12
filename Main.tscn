@@ -1,0 +1,97 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/WorldGenerator.gd" id="2_world"]
+[ext_resource type="Script" path="res://scripts/TetherSystem.gd" id="3_tether"]
+[ext_resource type="Script" path="res://scripts/ProceduralSoundscape.gd" id="4_sound"]
+[ext_resource type="PackedScene" path="res://scenes/ArkBase.tscn" id="5_ark"]
+[ext_resource type="PackedScene" path="res://scenes/HUD.tscn" id="6_hud"]
+[ext_resource type="PackedScene" path="res://scenes/MainMenu.tscn" id="7_menu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_drift"]
+sky_top_color = Color(0.03, 0.02, 0.1, 1)
+sky_horizon_color = Color(0.14, 0.09, 0.32, 1)
+sky_curve = 0.09
+ground_bottom_color = Color(0.01, 0.01, 0.04, 1)
+ground_horizon_color = Color(0.11, 0.07, 0.26, 1)
+ground_curve = 0.05
+sun_angle_max = 24.0
+sun_curve = 0.1
+
+[sub_resource type="Sky" id="Sky_drift"]
+sky_material = SubResource("ProceduralSkyMaterial_drift")
+
+[sub_resource type="Environment" id="Environment_drift"]
+background_mode = 2
+sky = SubResource("Sky_drift")
+ambient_light_source = 3
+ambient_light_color = Color(0.4, 0.35, 0.7, 1)
+ambient_light_sky_contribution = 0.6
+ambient_light_energy = 0.45
+tonemap_mode = 3
+tonemap_exposure = 1.05
+tonemap_white = 6.0
+glow_enabled = true
+glow_intensity = 1.0
+glow_strength = 1.15
+glow_bloom = 0.22
+glow_blend_mode = 1
+glow_hdr_threshold = 0.9
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_cascades = 4
+sdfgi_min_cell_size = 0.6
+sdfgi_energy = 0.8
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.002
+volumetric_fog_albedo = Color(0.35, 0.3, 0.7, 1)
+volumetric_fog_emission = Color(0.14, 0.09, 0.34, 1)
+volumetric_fog_emission_energy = 0.04
+volumetric_fog_anisotropy = 0.4
+volumetric_fog_length = 220.0
+volumetric_fog_ambient_inject = 0.05
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_drift"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_drift")
+camera_attributes = SubResource("CameraAttributesPractical_drift")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.766044, -0.413176, 0.492404, 0.000000, 0.766044, 0.642788, -0.642788, -0.492404, 0.586824, 0, 60, 0)
+light_color = Color(0.86, 0.8, 1, 1)
+light_energy = 1.1
+shadow_enabled = true
+directional_shadow_max_distance = 220.0
+
+[node name="WorldGenerator" type="Node3D" parent="."]
+script = ExtResource("2_world")
+
+[node name="Ark" parent="." instance=ExtResource("5_ark")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9, 30)
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/Player.tscn")
+spawn_path = NodePath("../Players")
+spawn_limit = 4
+
+[node name="TetherSystem" type="Node3D" parent="."]
+script = ExtResource("3_tether")
+
+[node name="Soundscape" type="Node" parent="."]
+script = ExtResource("4_sound")
+
+[node name="MenuCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 23, 30)
+current = true
+fov = 65.0
+far = 1500.0
+
+[node name="HUD" parent="." instance=ExtResource("6_hud")]
+
+[node name="MainMenu" parent="." instance=ExtResource("7_menu")]
